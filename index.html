@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>request animation frame</title>
+</head>
+<body>
+  <h1>Hello, Cooyzee.</h1>
+</body>
+<script>
+  let start = 0
+  function step(timestamp) {
+    const interval = timestamp - start
+    console.log(interval)
+    start = timestamp
+    requestAnimationFrame(step)
+  }
+  // requestAnimationFrame(step)
+  const _el = document.querySelector('h1')
+
+</script>
+</html>
