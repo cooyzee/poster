@@ -1,13 +1,29 @@
 const Koa = require('koa')
-const logger = require('koa-logger')
 const app = new Koa()
+const Router = require('koa-router')
+const router = new Router()
+const send = require('koa-send')
 
-// logger
-app.use(logger((str, args) => {
-  // redirect koa logger to other output pipe
-  // default is process.stdout(by console.log function)
-  console.log(args)
-}))
+const puppeteer = require('puppeteer')
+
+router.get('/getIndexScreen', getIndexScreen)
+router.get('/', index)
+
+app.use(router.routes())
+
+async function index(ctx) {
+  await send(ctx, 'index.html')
+}
+
+async function getIndexScreen(ctx) {
+  const browser = await puppeteer.launch()
+  const page = await browser.newPage()
+  await page.goto('http://localhost:3000')
+  await page.screenshot({path: 'example.png'})
+
+  await browser.close()
+  await send(ctx, 'example.png')
+}
 
 app.use(async ctx => {
   ctx.status = 404;

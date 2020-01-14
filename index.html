@@ -2,21 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>request animation frame</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Poster Service</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .panel {
+      width: 300px;
+      padding: 20px;
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    }
+  </style>
 </head>
 <body>
-  <h1>Hello, Cooyzee.</h1>
+  <div class="container">
+    <div class="panel">
+      <h1>Poster</h1>
+    </div>
+  </div>
 </body>
-<script>
-  let start = 0
-  function step(timestamp) {
-    const interval = timestamp - start
-    console.log(interval)
-    start = timestamp
-    requestAnimationFrame(step)
-  }
-  // requestAnimationFrame(step)
-  const _el = document.querySelector('h1')
+<!--<script>-->
+<!--  function fadeIn(el) {-->
+<!--    el.style.opacity = 0-->
+<!--    var start = null-->
+<!--    function step(timestamp) {-->
+<!--      if (!start) start = timestamp;-->
+<!--      var progress = timestamp - start-->
+<!--      el.style.opacity = (progress / 800).toFixed(2)-->
+<!--      if (el.style.opacity < '1.00') {-->
+<!--        requestAnimationFrame(step)-->
+<!--      }-->
+<!--    }-->
+<!--    requestAnimationFrame(step)-->
+<!--  }-->
 
-</script>
+<!--  var _el = document.querySelector('.panel')-->
+<!--  fadeIn(_el)-->
+<!--</script>-->
 </html>
