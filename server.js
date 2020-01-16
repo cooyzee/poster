@@ -7,39 +7,57 @@ const send = require('koa-send')
 const puppeteer = require('puppeteer')
 
 router.get('/getIndexScreen', getIndexScreen)
-router.get('/', index)
 
 app.use(router.routes())
 
-async function index(ctx) {
-  await send(ctx, 'index.html')
-}
+app.use(async (ctx, next) => {
+  try {
+    await send(ctx, ctx.path, {root: __dirname + '/public'})
+  } catch (e) {
+    console.log(e)
+    next()
+  }
+})
 
 async function getIndexScreen(ctx) {
-  const browser = await puppeteer.launch()
+  const browser = await puppeteer.launch({
+    args: [
+      '–disable-gpu',
+      '–disable-dev-shm-usage',
+      '–disable-setuid-sandbox',
+      '–no-first-run',
+      '–no-sandbox',
+      '–no-zygote',
+      '–single-process'
+    ]
+  })
   const page = await browser.newPage()
-  await page.goto('http://localhost:3000')
-  await page.screenshot({path: 'example.png'})
+  await page.setViewport({
+    width: 375,
+    height: 667
+  })
+  await page.goto('http://localhost:3000/index.html')
+  await page.screenshot({path: 'public/example.png'})
 
   await browser.close()
-  await send(ctx, 'example.png')
+  await send(ctx, 'public/example.png')
 }
 
 app.use(async ctx => {
-  ctx.status = 404;
+  ctx.status = 404
   switch (ctx.accepts('html', 'json')) {
     case 'html':
       ctx.type = 'html'
-      ctx.body = '<h1>Page Not Found</h1>'
+      ctx.body = '<h1>Not Found</h1>'
       break
     case 'json':
       ctx.body = {
-        message: 'Page Not Found'
+        message: 'Not Found'
       }
       break
     default:
       ctx.type = 'text'
-      ctx.body = 'Page Not Found'
+      ctx.body = 'Not Found'
   }
 })
 
